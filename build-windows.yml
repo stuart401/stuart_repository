@@ -1,0 +1,16 @@
+# Builds the Windows .exe on GitHub's free Windows runners. Trigger: Actions tab -> "Build Windows app" -> Run workflow.
+name: Build Windows app
+on: workflow_dispatch
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22 }
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: ./build-windows.ps1
+        shell: pwsh
+      - uses: actions/upload-artifact@v4
+        with: { name: AI-Chatbot-windows, path: desktop/release/*.exe }
